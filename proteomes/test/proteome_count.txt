@@ -1,0 +1,6 @@
+#counts number of genes in each file 
+for file in proteome_*.fasta.out
+do 
+echo "$file" >> tempfile.out
+grep ">>" $file | wc -l >> tempfile.out 
+done 
