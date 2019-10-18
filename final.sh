@@ -1,13 +1,18 @@
+#script to determine pH resistant methanogenic
+#The directories in this script for hmmer and muscle programs should be specified before running the script. 
+#The final outputs of the script are hsp_wmcra.out (proteomes of interest) and hsp_hits.out (summary table)
+
+
 #combine sample mcrAgene fastas into one fasta 
 cat ./ref_sequences/mcr* > ./ref_sequences/mcr_all.fasta
 	
 
 #preform a muscle alignment on the fastas
-../muscle -in ./ref_sequences/mcr_all.fasta -out ./ref_sequences/mcr.afa
+./muscle -in ./ref_sequences/mcr_all.fasta -out ./ref_sequences/mcr.afa
 rm ./ref_sequences/mcr_all.fasta	
 
 #Execute hmmbuild on aligned fasta 
-hmmbuild -o ./ref_sequences/mcr_hmmSummary.txt ./ref_sequences/mcr.hmm ./ref_sequences/mcr.afa
+./hmmer/bin/hmmbuild -o ./ref_sequences/mcr_hmmSummary.txt ./ref_sequences/mcr.hmm ./ref_sequences/mcr.afa
 rm ./ref_sequences/mcr.afa
 
 #make a directory for hsp hmmsearch output	
@@ -17,7 +22,7 @@ cd proteomes
 
 for file in proteome_*
  do
- hmmsearch ../ref_sequences/mcr.hmm $file > ./test/$file.out
+ ../hmmer/bin/hmmsearch ../ref_sequences/mcr.hmm $file > ./test/$file.out
  done
 
 cd ..
@@ -42,11 +47,11 @@ cat ./ref_sequences/hsp* > ./ref_sequences/hsp_all.fasta
 	
 
 #preform a muscle alignment on the fastas
-../muscle -in ./ref_sequences/hsp_all.fasta -out ./ref_sequences/hsp.afa
+./muscle -in ./ref_sequences/hsp_all.fasta -out ./ref_sequences/hsp.afa
 rm ./ref_sequences/hsp_all.fasta	
 
 #Execute hmmbuild on aligned fasta 
-hmmbuild -o ./ref_sequences/hsp_hmmSummary.txt ./ref_sequences/hsp.hmm ./ref_sequences/hsp.afa
+./hmmer/bin/hmmbuild -o ./ref_sequences/hsp_hmmSummary.txt ./ref_sequences/hsp.hmm ./ref_sequences/hsp.afa
 rm ./ref_sequences/hsp.afa
 
 #make a directory for hsp hmmsearch output	
@@ -56,7 +61,7 @@ cd proteomes
 
 for file in proteome_*
  do
- hmmsearch ../ref_sequences/hsp.hmm $file > ./test2/$file.out
+ ../hmmer/bin/hmmsearch ../ref_sequences/hsp.hmm $file > ./test2/$file.out
  done
 
 cd ..
@@ -77,6 +82,7 @@ mcra_hits=$(cat ../../mcra_hits.out | grep "$file" | cut -d , -f 2)
 echo "$file , $mcra_hits , $hsp_hits" >> ../../hsp_hits.out
 done
 
+#Orders files by number of hits of the hsp gene. The readout is file name, number of mcrAgenes, number of hsp genes
 cat ../../hsp_hits.out | sort -t , -k 3 -n -r > ../../hsp_sorted.out
  
 cat ../../hsp_sorted.out | grep -v "0 ," > ../../hsp_wmcra.out
