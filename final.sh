@@ -70,19 +70,16 @@ rm ./ref_sequences/hsp.hmm  ./ref_sequences/hsp_hmmSummary.txt
 
 cd proteomes/test2
 
-rm ../../hsp_hits.out
-rm ../../hsp_sorted.out
-rm ../../hsp_wmcra.out
+rm ../../summary.out
+rm ../../ranked_list.txt
 
 #counts number of genes in each file  
 for file in proteome_*
 do
 hsp_hits=$(grep ">>" $file | wc -l)
 mcra_hits=$(cat ../../mcra_hits.out | grep "$file" | cut -d , -f 2)
-echo "$file , $mcra_hits , $hsp_hits" >> ../../hsp_hits.out
+echo "$file , $mcra_hits , $hsp_hits" >> ../../summary.out
 done
 
 #Orders files by number of hits of the hsp gene. The readout is file name, number of mcrAgenes, number of hsp genes
-cat ../../hsp_hits.out | sort -t , -k 3 -n -r > ../../hsp_sorted.out
- 
-cat ../../hsp_sorted.out | grep -v "0 ," > ../../hsp_wmcra.out
+cat ../../summary.out | sort -t , -k 3 -n -r | grep -v "0 ," > ../../ranked_list.txt
