@@ -1,6 +1,6 @@
 #script to determine pH resistant methanogenic
 #The directories in this script for hmmer and muscle programs should be specified before running the script. 
-#The final outputs of the script are hsp_wmcra.out (proteomes of interest) and hsp_hits.out (summary table)
+#The final outputs of the script are ranked_list.txt (proteomes of interest) and summary.out (summary table)
 
 
 #combine sample mcrAgene fastas into one fasta 
