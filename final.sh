@@ -1,6 +1,6 @@
 #script to determine pH resistant methanogenic
 #The directories in this script for hmmer and muscle programs should be specified before running the script. 
-#The final outputs of the script are ranked_list.txt (proteomes of interest) and summary.out (summary table)
+#The final outputs of the script are Final_output.txt (proteomes of interest) and summary.out (summary table)
 
 
 #combine sample mcrAgene fastas into one fasta 
@@ -83,3 +83,8 @@ done
 
 #Orders files by number of hits of the hsp gene. The readout is file name, number of mcrAgenes, number of hsp genes
 cat ../../summary.out | sort -t , -k 3 -n -r | grep -v "0 ," > ../../ranked_list.txt
+
+rm ../../Final_output.txt
+
+echo "proteome name, mcrA hits, hsp70 hits" >> ../../Final_output.txt
+cat ../../ranked_list.txt >> ../../Final_output.txt
